@@ -1,17 +1,16 @@
-// src/components/game/CountrySelection.tsx
 import React from 'react';
 import { useGameStore } from '@/store/gameStore';
-import { COUNTRIES, CountryCode } from '@/utils/countries';
+import { CountryCode, getCountryEntries, getCountryFlag } from '@/utils/countries';
 
 export function CountrySelection() {
   const { selectedCountries, setSelectedCountries, setGameState } = useGameStore();
 
   const handleCountrySelect = (countryCode: CountryCode) => {
     if (selectedCountries.includes(countryCode)) {
-      // Si le pays est déjà sélectionné, on le retire
-      setSelectedCountries(selectedCountries.filter(c => c !== countryCode));
+      setSelectedCountries(
+        selectedCountries.filter(c => c !== countryCode)
+      );
     } else if (selectedCountries.length < 2) {
-      // Si on a moins de 2 pays sélectionnés, on ajoute le nouveau
       setSelectedCountries([...selectedCountries, countryCode]);
     }
   };
@@ -33,10 +32,10 @@ export function CountrySelection() {
           </h2>
           
           <div className="grid grid-cols-2 gap-4 mb-6">
-            {Object.entries(COUNTRIES).map(([code, country]) => (
+            {getCountryEntries().map(([code, country]) => (
               <button
                 key={code}
-                onClick={() => handleCountrySelect(code as CountryCode)}
+                onClick={() => handleCountrySelect(code)}
                 className={`
                   flex items-center justify-center space-x-2 p-4 rounded-lg
                   transition-colors duration-200
@@ -67,7 +66,7 @@ export function CountrySelection() {
         </div>
 
         <div className="text-center text-slate-400">
-          <p>Selected: {selectedCountries.map(code => COUNTRIES[code].flag).join(' vs ')}</p>
+          <p>Selected: {selectedCountries.map(getCountryFlag).join(' vs ')}</p>
         </div>
       </div>
     </div>

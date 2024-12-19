@@ -1,12 +1,12 @@
-// src/store/gameStore.ts
 import { create } from 'zustand'
+import { CountryCode } from '@/utils/countries'
 
 interface GameStore {
-  selectedCountries: string[]
+  selectedCountries: CountryCode[]
   sips: number
   gameState: 'selection' | 'playing' | 'gameOver'
   currentImageIndex: number
-  setSelectedCountries: (countries: string[]) => void
+  setSelectedCountries: (countries: CountryCode[]) => void
   incrementSips: () => void
   setGameState: (state: 'selection' | 'playing' | 'gameOver') => void
   resetGame: () => void

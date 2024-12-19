@@ -1,8 +1,7 @@
-// src/components/game/GameOver.tsx
 import React from 'react';
 import { useGameStore } from '@/store/gameStore';
 import { Beer } from 'lucide-react';
-import { COUNTRIES } from '@/utils/countries';
+import { getCountryFlag } from '@/utils/countries';
 
 export function GameOver() {
   const { sips, selectedCountries, resetGame } = useGameStore();
@@ -13,11 +12,10 @@ export function GameOver() {
         <div className="bg-slate-800 rounded-lg p-8 text-center">
           <h1 className="text-4xl font-bold mb-2">GAME OVER</h1>
           
-          {/* Affichage des pays sélectionnés */}
           <div className="flex items-center justify-center space-x-4 mb-8">
             {selectedCountries.map((code) => (
               <span key={code} className="text-3xl">
-                {COUNTRIES[code].flag}
+                {getCountryFlag(code)}
               </span>
             ))}
           </div>
@@ -46,16 +44,14 @@ export function GameOver() {
           {/* Boutons d'action */}
           <div className="space-y-4">
             <button
-              onClick={() => resetGame()}
+              onClick={resetGame}
               className="w-full bg-red-500 hover:bg-red-600 text-white p-4 rounded-lg font-semibold transition-colors duration-200"
             >
               Play Again
             </button>
             
-            {/* Partager le score - à implémenter si besoin */}
             <button
               onClick={() => {
-                // Logique de partage à implémenter
                 navigator.clipboard.writeText(`I just took ${sips} sips playing CultureSips! Can you beat my score?`);
                 alert('Score copied to clipboard!');
               }}
