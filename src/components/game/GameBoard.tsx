@@ -1,6 +1,8 @@
+// src/components/game/GameBoard.tsx
 import React, { useState, useEffect } from 'react';
 import { useGameStore } from '@/store/gameStore';
-import { CountryCode, getCountry } from '@/utils/countries';
+import { COUNTRIES, CountryCode } from '@/utils/countries';
+import { getRandomImage } from '@/utils/images';
 import { Beer } from 'lucide-react';
 
 export function GameBoard() {
@@ -13,25 +15,34 @@ export function GameBoard() {
   } = useGameStore();
 
   const [currentImage, setCurrentImage] = useState<string | null>(null);
-  const [correctAnswer, setCorrectAnswer] = useState<CountryCode | null>(null);
+  const [correctAnswer, setCorrectAnswer] = useState<CountryCode>(selectedCountries[0]);
   const [isLoading, setIsLoading] = useState(true);
+  const [imageError, setImageError] = useState(false);
 
-  // Simule le chargement d'une nouvelle image
+  // Charge une nouvelle image
   const loadNewImage = () => {
     setIsLoading(true);
-    // Ici, vous chargerez une vraie image de votre base de données
-    // Pour l'instant, on simule juste un délai
-    setTimeout(() => {
-      const randomCountry = selectedCountries[Math.floor(Math.random() * selectedCountries.length)];
-      setCorrectAnswer(randomCountry);
-      setCurrentImage(`/images/countries/${randomCountry}/image${currentImageIndex}.jpg`);
-      setIsLoading(false);
-    }, 500);
+    setImageError(false);
+    
+    // Sélectionne un pays aléatoire parmi les deux sélectionnés
+    const randomCountry = selectedCountries[Math.floor(Math.random() * 2)];
+    setCorrectAnswer(randomCountry);
+    
+    // Obtient une image aléatoire pour ce pays
+    const imagePath = getRandomImage(randomCountry);
+    setCurrentImage(imagePath);
+    setIsLoading(false);
   };
 
   useEffect(() => {
     loadNewImage();
-  }, [currentImageIndex, selectedCountries]);
+  }, [currentImageIndex]);
+
+  const handleImageError = () => {
+    setImageError(true);
+    // Recharger une nouvelle image après un petit délai
+    setTimeout(loadNewImage, 1000);
+  };
 
   const handleAnswer = (countryCode: CountryCode) => {
     if (countryCode === correctAnswer) {
@@ -54,35 +65,42 @@ export function GameBoard() {
         </div>
 
         <div className="bg-slate-800 rounded-lg overflow-hidden mb-6">
-          {isLoading ? (
-            <div className="aspect-video bg-slate-700 animate-pulse flex items-center justify-center">
-              Loading...
+          {isLoading || imageError ? (
+            <div className="aspect-[3/4] bg-slate-700 animate-pulse flex items-center justify-center">
+              {imageError ? "Chargement d'une nouvelle image..." : "Loading..."}
             </div>
           ) : (
-            <div className="aspect-video bg-slate-700 relative">
-              {/* Remplacer par votre composant Image ou img une fois les images ajoutées */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                [Image Placeholder]
-              </div>
+            <div className="aspect-[3/4] bg-slate-700 relative">
+              {currentImage && (
+                <img 
+                  src={currentImage} 
+                  alt="Guess the country"
+                  className="w-full h-full object-cover transition-opacity duration-300"
+                  onError={handleImageError}
+                />
+              )}
             </div>
           )}
         </div>
 
         <div className="grid grid-cols-2 gap-4">
-          {selectedCountries.map((countryCode) => {
-            const country = getCountry(countryCode);
-            return (
-              <button
-                key={countryCode}
-                onClick={() => handleAnswer(countryCode)}
-                className="bg-red-500 hover:bg-red-600 p-4 rounded-lg flex items-center justify-center space-x-2 transition-colors duration-200"
-                disabled={isLoading}
-              >
-                <span className="text-2xl">{country.flag}</span>
-                <span className="font-semibold">{country.name}</span>
-              </button>
-            );
-          })}
+          {selectedCountries.map((countryCode) => (
+            <button
+              key={countryCode}
+              onClick={() => handleAnswer(countryCode)}
+              className="bg-red-500 hover:bg-red-600 p-4 rounded-lg flex items-center justify-center space-x-2 transition-colors duration-200"
+              disabled={isLoading || imageError}
+            >
+              <span className="text-2xl">{COUNTRIES[countryCode].flag}</span>
+              <span className="font-semibold">{COUNTRIES[countryCode].name}</span>
+            </button>
+          ))}
+        </div>
+
+        {/* Debug info */}
+        <div className="mt-4 text-slate-400 text-sm">
+          <p>Current image: {currentImage}</p>
+          <p>Correct answer: {COUNTRIES[correctAnswer]?.name}</p>
         </div>
       </div>
     </div>
