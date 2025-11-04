@@ -24,33 +24,31 @@ export function CountrySelection() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white p-4 overflow-auto">
-      <div className="max-w-2xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-8 pt-4">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <Beer className="w-10 h-10 text-orange-400 animate-bounce" />
-            <h1 className="text-5xl font-black bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 bg-clip-text text-transparent">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white p-3 flex flex-col">
+      <div className="max-w-2xl mx-auto w-full flex flex-col h-full">
+        {/* Header - Compact */}
+        <div className="text-center mb-3 pt-2">
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <Beer className="w-8 h-8 text-orange-400 animate-bounce" />
+            <h1 className="text-4xl font-black bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 bg-clip-text text-transparent">
               CULTURESIPS
             </h1>
-            <Globe className="w-10 h-10 text-blue-400 animate-pulse" />
+            <Globe className="w-8 h-8 text-blue-400 animate-pulse" />
           </div>
-          <p className="text-slate-300 text-lg">
+          <p className="text-slate-300 text-sm">
             Testez vos connaissances culturelles !
           </p>
         </div>
 
-        {/* Instructions */}
-        <div className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 backdrop-blur-sm rounded-2xl p-6 mb-6 border border-white/10">
-          <div className="flex items-start gap-3">
-            <Sparkles className="w-6 h-6 text-yellow-400 mt-1 flex-shrink-0" />
+        {/* Instructions - Compact */}
+        <div className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 backdrop-blur-sm rounded-xl p-3 mb-3 border border-white/10">
+          <div className="flex items-start gap-2">
+            <Sparkles className="w-5 h-5 text-yellow-400 mt-0.5 flex-shrink-0" />
             <div>
-              <h2 className="text-xl font-bold mb-2">Comment jouer ?</h2>
-              <ol className="text-sm text-slate-300 space-y-1">
-                <li>1️⃣ Choisissez 2 pays ci-dessous</li>
-                <li>2️⃣ Devinez le pays sur chaque image</li>
-                <li>3️⃣ Chaque bonne réponse = +1 gorgée</li>
-                <li>4️⃣ Une erreur = buvez tout ! 🍺</li>
+              <h2 className="text-base font-bold mb-1">Comment jouer ?</h2>
+              <ol className="text-xs text-slate-300 space-y-0.5">
+                <li>1️⃣ Choisissez 2 pays • 2️⃣ Devinez le pays</li>
+                <li>3️⃣ Bonne réponse = +1 🍺 • 4️⃣ Erreur = buvez tout !</li>
               </ol>
             </div>
           </div>
@@ -58,7 +56,7 @@ export function CountrySelection() {
 
         {/* Pays sélectionnés */}
         {selectedCountries.length > 0 && (
-          <div className="bg-black/30 backdrop-blur-sm rounded-2xl p-4 mb-6 border border-orange-500/30">
+          <div className="bg-black/30 backdrop-blur-sm rounded-xl p-3 mb-3 border border-orange-500/30">
             <div className="flex items-center justify-center gap-6">
               {selectedCountries.map((code, index) => (
                 <React.Fragment key={code}>
@@ -83,9 +81,9 @@ export function CountrySelection() {
           </div>
         )}
 
-        {/* Grille de pays */}
-        <div className="bg-black/20 backdrop-blur-sm rounded-2xl p-4 mb-6 border border-white/10">
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 max-h-96 overflow-y-auto pr-2">
+        {/* Grille de pays - Optimisée pour mobile */}
+        <div className="bg-black/20 backdrop-blur-sm rounded-xl p-3 mb-3 border border-white/10 flex-1 overflow-hidden">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-[calc(100vh-380px)] overflow-y-auto pr-1">
             {Object.entries(COUNTRIES).map(([code, country]) => {
               const isSelected = selectedCountries.includes(code as CountryCode);
               return (
@@ -93,14 +91,14 @@ export function CountrySelection() {
                   key={code}
                   onClick={() => handleCountrySelect(code as CountryCode)}
                   className={`
-                    relative flex items-center justify-center gap-2 p-4 rounded-xl
+                    relative flex items-center justify-center gap-1.5 p-3 rounded-lg
                     transition-all duration-200 transform hover:scale-105 active:scale-95
                     ${isSelected
                       ? 'bg-gradient-to-br from-orange-500 to-red-500 shadow-lg shadow-orange-500/50 border-2 border-orange-300'
                       : 'bg-slate-700/50 hover:bg-slate-600/50 border-2 border-white/5'}
                   `}
                 >
-                  <span className="text-3xl">{country.flag}</span>
+                  <span className="text-2xl">{country.flag}</span>
                   <span className={`text-xs font-semibold ${isSelected ? 'text-white' : 'text-slate-300'}`}>
                     {country.name}
                   </span>
@@ -115,34 +113,29 @@ export function CountrySelection() {
           </div>
         </div>
 
-        {/* Bouton de démarrage */}
+        {/* Bouton de démarrage - Fixe en bas */}
         <button
           onClick={handleStartGame}
           disabled={selectedCountries.length !== 2}
           className={`
-            w-full p-6 rounded-2xl font-bold text-lg
+            w-full p-4 rounded-xl font-bold text-base
             transition-all duration-300 transform
             ${selectedCountries.length === 2
               ? 'bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 shadow-lg shadow-green-500/50 hover:scale-105 active:scale-95 border-2 border-green-300'
               : 'bg-slate-700/50 cursor-not-allowed opacity-50 border-2 border-white/5'}
           `}
         >
-          <div className="flex items-center justify-center gap-3">
+          <div className="flex items-center justify-center gap-2">
             {selectedCountries.length === 2 ? (
               <>
-                <Play className="w-6 h-6" fill="currentColor" />
+                <Play className="w-5 h-5" fill="currentColor" />
                 <span>C&apos;est parti ! 🎉</span>
               </>
             ) : (
-              <span>Sélectionnez 2 pays pour commencer</span>
+              <span className="text-sm">Sélectionnez 2 pays ({selectedCountries.length}/2)</span>
             )}
           </div>
         </button>
-
-        {/* Footer */}
-        <p className="text-center text-slate-500 text-xs mt-6">
-          {selectedCountries.length}/2 pays sélectionnés
-        </p>
       </div>
     </div>
   );

@@ -49,8 +49,8 @@ export const generateCountryImagePaths = (countryCode: CountryCode): string[] =>
   ));
 };
 
-// Obtenir une URL Unsplash pour un pays
-const getUnsplashImage = (countryCode: CountryCode, seed: number): string => {
+// Obtenir une image de placeholder pour un pays
+const getPlaceholderImage = (countryCode: CountryCode, seed: number): string => {
   const cacheKey = `${countryCode}-${seed}`;
 
   // Vérifier le cache
@@ -58,12 +58,9 @@ const getUnsplashImage = (countryCode: CountryCode, seed: number): string => {
     return imageCache.get(cacheKey)!;
   }
 
-  // Utiliser les mots-clés du pays
-  const keywords = COUNTRY_KEYWORDS[countryCode];
-  const randomKeyword = keywords[seed % keywords.length];
-
-  // Unsplash Source - taille optimisée pour mobile (600x800)
-  const url = `https://source.unsplash.com/600x800/?${encodeURIComponent(randomKeyword)}&${seed}`;
+  // Utiliser Picsum avec seed - Format carré 400x400 pour chargement ultra rapide
+  const imageId = `${countryCode}-${seed}`;
+  const url = `https://picsum.photos/seed/${imageId}/400/400`;
 
   imageCache.set(cacheKey, url);
   return url;
@@ -79,8 +76,8 @@ export const getRandomImage = (countryCode: CountryCode): string => {
     return `/images/countries/${countryCode.toLowerCase()}/${randomIndex}.jpg`;
   }
 
-  // Pour les autres pays, utiliser Unsplash
-  return getUnsplashImage(countryCode, seed);
+  // Pour les autres pays, utiliser Lorem Picsum (plus fiable qu'Unsplash)
+  return getPlaceholderImage(countryCode, seed);
 };
 
 // Vérifier si une image existe (pour les images locales)
