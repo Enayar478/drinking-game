@@ -1,17 +1,18 @@
 // src/components/game/CountrySelection.tsx
+'use client';
+
 import React from 'react';
 import { useGameStore } from '@/store/gameStore';
 import { COUNTRIES, CountryCode } from '@/utils/countries';
+import { Beer, Globe, Sparkles, Play } from 'lucide-react';
 
 export function CountrySelection() {
   const { selectedCountries, setSelectedCountries, setGameState } = useGameStore();
 
   const handleCountrySelect = (countryCode: CountryCode) => {
     if (selectedCountries.includes(countryCode)) {
-      // Si le pays est déjà sélectionné, on le retire
       setSelectedCountries(selectedCountries.filter(c => c !== countryCode));
     } else if (selectedCountries.length < 2) {
-      // Si on a moins de 2 pays sélectionnés, on ajoute le nouveau
       setSelectedCountries([...selectedCountries, countryCode]);
     }
   };
@@ -23,52 +24,125 @@ export function CountrySelection() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 text-white p-4">
-      <div className="max-w-md mx-auto">
-        <h1 className="text-4xl font-bold text-center mb-8">CULTURESIPS</h1>
-        
-        <div className="bg-slate-800 rounded-lg p-6 mb-8">
-          <h2 className="text-xl mb-4 text-center">
-            Select 2 countries to play
-          </h2>
-          
-          <div className="grid grid-cols-2 gap-4 mb-6">
-            {Object.entries(COUNTRIES).map(([code, country]) => (
-              <button
-                key={code}
-                onClick={() => handleCountrySelect(code as CountryCode)}
-                className={`
-                  flex items-center justify-center space-x-2 p-4 rounded-lg
-                  transition-colors duration-200
-                  ${selectedCountries.includes(code as CountryCode)
-                    ? 'bg-red-500 hover:bg-red-600'
-                    : 'bg-slate-700 hover:bg-slate-600'}
-                `}
-              >
-                <span className="text-2xl">{country.flag}</span>
-                <span>{country.name}</span>
-              </button>
-            ))}
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white p-4 overflow-auto">
+      <div className="max-w-2xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-8 pt-4">
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <Beer className="w-10 h-10 text-orange-400 animate-bounce" />
+            <h1 className="text-5xl font-black bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 bg-clip-text text-transparent">
+              CULTURESIPS
+            </h1>
+            <Globe className="w-10 h-10 text-blue-400 animate-pulse" />
           </div>
-
-          <button
-            onClick={handleStartGame}
-            disabled={selectedCountries.length !== 2}
-            className={`
-              w-full p-4 rounded-lg font-semibold
-              transition-colors duration-200
-              ${selectedCountries.length === 2
-                ? 'bg-green-500 hover:bg-green-600'
-                : 'bg-slate-600 cursor-not-allowed'}
-            `}
-          >
-            {selectedCountries.length === 2 ? 'Start Game!' : 'Select 2 countries'}
-          </button>
+          <p className="text-slate-300 text-lg">
+            Testez vos connaissances culturelles !
+          </p>
         </div>
 
-        <div className="text-center text-slate-400">
-          <p>Selected: {selectedCountries.map(code => COUNTRIES[code].flag).join(' vs ')}</p>
+        {/* Instructions */}
+        <div className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 backdrop-blur-sm rounded-2xl p-6 mb-6 border border-white/10">
+          <div className="flex items-start gap-3">
+            <Sparkles className="w-6 h-6 text-yellow-400 mt-1 flex-shrink-0" />
+            <div>
+              <h2 className="text-xl font-bold mb-2">Comment jouer ?</h2>
+              <ol className="text-sm text-slate-300 space-y-1">
+                <li>1️⃣ Choisissez 2 pays ci-dessous</li>
+                <li>2️⃣ Devinez le pays sur chaque image</li>
+                <li>3️⃣ Chaque bonne réponse = +1 gorgée</li>
+                <li>4️⃣ Une erreur = buvez tout ! 🍺</li>
+              </ol>
+            </div>
+          </div>
         </div>
+
+        {/* Pays sélectionnés */}
+        {selectedCountries.length > 0 && (
+          <div className="bg-black/30 backdrop-blur-sm rounded-2xl p-4 mb-6 border border-orange-500/30">
+            <div className="flex items-center justify-center gap-6">
+              {selectedCountries.map((code, index) => (
+                <React.Fragment key={code}>
+                  <div className="flex flex-col items-center gap-2">
+                    <span className="text-5xl animate-bounce">{COUNTRIES[code].flag}</span>
+                    <span className="text-sm font-bold text-orange-400">{COUNTRIES[code].name}</span>
+                  </div>
+                  {index === 0 && selectedCountries.length === 2 && (
+                    <span className="text-3xl font-black text-orange-400">VS</span>
+                  )}
+                </React.Fragment>
+              ))}
+              {selectedCountries.length === 1 && (
+                <div className="flex flex-col items-center gap-2">
+                  <div className="w-16 h-16 rounded-full border-2 border-dashed border-slate-600 flex items-center justify-center">
+                    <span className="text-slate-600 text-2xl">?</span>
+                  </div>
+                  <span className="text-xs text-slate-500">Choisissez un 2ème pays</span>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Grille de pays */}
+        <div className="bg-black/20 backdrop-blur-sm rounded-2xl p-4 mb-6 border border-white/10">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 max-h-96 overflow-y-auto pr-2">
+            {Object.entries(COUNTRIES).map(([code, country]) => {
+              const isSelected = selectedCountries.includes(code as CountryCode);
+              return (
+                <button
+                  key={code}
+                  onClick={() => handleCountrySelect(code as CountryCode)}
+                  className={`
+                    relative flex items-center justify-center gap-2 p-4 rounded-xl
+                    transition-all duration-200 transform hover:scale-105 active:scale-95
+                    ${isSelected
+                      ? 'bg-gradient-to-br from-orange-500 to-red-500 shadow-lg shadow-orange-500/50 border-2 border-orange-300'
+                      : 'bg-slate-700/50 hover:bg-slate-600/50 border-2 border-white/5'}
+                  `}
+                >
+                  <span className="text-3xl">{country.flag}</span>
+                  <span className={`text-xs font-semibold ${isSelected ? 'text-white' : 'text-slate-300'}`}>
+                    {country.name}
+                  </span>
+                  {isSelected && (
+                    <div className="absolute -top-2 -right-2 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center border-2 border-white">
+                      <span className="text-xs">✓</span>
+                    </div>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Bouton de démarrage */}
+        <button
+          onClick={handleStartGame}
+          disabled={selectedCountries.length !== 2}
+          className={`
+            w-full p-6 rounded-2xl font-bold text-lg
+            transition-all duration-300 transform
+            ${selectedCountries.length === 2
+              ? 'bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 shadow-lg shadow-green-500/50 hover:scale-105 active:scale-95 border-2 border-green-300'
+              : 'bg-slate-700/50 cursor-not-allowed opacity-50 border-2 border-white/5'}
+          `}
+        >
+          <div className="flex items-center justify-center gap-3">
+            {selectedCountries.length === 2 ? (
+              <>
+                <Play className="w-6 h-6" fill="currentColor" />
+                <span>C&apos;est parti ! 🎉</span>
+              </>
+            ) : (
+              <span>Sélectionnez 2 pays pour commencer</span>
+            )}
+          </div>
+        </button>
+
+        {/* Footer */}
+        <p className="text-center text-slate-500 text-xs mt-6">
+          {selectedCountries.length}/2 pays sélectionnés
+        </p>
       </div>
     </div>
   );

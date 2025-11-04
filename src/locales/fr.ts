@@ -1,5 +1,5 @@
 // src/locales/fr.ts
-export const fr = {
+export default {
     common: {
       appName: 'CULTURESIPS',
       tagline: 'Testez vos connaissances, prenez une gorgée !',
@@ -70,14 +70,4 @@ export const fr = {
         changeCountries: 'Changer de pays',
       },
     },
-  };
-  
-  // src/locales/en.ts
-  export const en = {
-    common: {
-      appName: 'CULTURESIPS',
-      tagline: 'Test your knowledge, take a sip!',
-      loading: 'Loading...',
-    },
-    // ... (mêmes clés que fr mais en anglais)
   };

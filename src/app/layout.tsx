@@ -1,20 +1,34 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
 export const metadata: Metadata = {
-  title: "Drinking Nation",
-  description: "So cool ! So good !",
+  title: "CultureSips - Jeu à boire culturel",
+  description: "Testez vos connaissances culturelles tout en vous amusant ! Devinez des pays à partir d'images et prenez une gorgée à chaque bonne réponse.",
+  keywords: ["jeu à boire", "culture", "quiz", "pays", "géographie", "soirée", "party game"],
+  authors: [{ name: "CultureSips Team" }],
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "CultureSips",
+  },
+  formatDetection: {
+    telephone: false,
+  },
+  openGraph: {
+    type: "website",
+    title: "CultureSips - Jeu à boire culturel",
+    description: "Testez vos connaissances culturelles ! Devinez des pays et buvez une gorgée à chaque bonne réponse.",
+    siteName: "CultureSips",
+  },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  themeColor: "#f97316",
 };
 
 export default function RootLayout({
@@ -23,10 +37,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+    <html lang="fr">
+      <head>
+        <link rel="apple-touch-icon" href="/icon-192.png" />
+      </head>
+      <body className="antialiased">
         {children}
       </body>
     </html>
