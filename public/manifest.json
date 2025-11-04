@@ -1,0 +1,28 @@
+{
+  "name": "CultureSips - Jeu à boire culturel",
+  "short_name": "CultureSips",
+  "description": "Testez vos connaissances culturelles tout en vous amusant ! Devinez des pays à partir d'images et prenez une gorgée à chaque bonne réponse.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#f97316",
+  "orientation": "portrait",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["games", "entertainment", "social"],
+  "lang": "fr",
+  "dir": "ltr"
+}

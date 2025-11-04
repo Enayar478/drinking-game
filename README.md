@@ -1,36 +1,116 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🍺 CultureSips - Jeu à Boire Culturel
 
-## Getting Started
+Un jeu de quiz culturel amusant où vous devez deviner des pays à partir d'images. Chaque bonne réponse = +1 gorgée. Une erreur = buvez tout !
 
-First, run the development server:
+## 🎮 Comment jouer ?
+
+1. **Sélectionnez 2 pays** parmi 25 pays disponibles (5 régions du monde)
+2. **Devinez le pays** affiché sur chaque image
+3. **Accumulez des gorgées** à chaque bonne réponse
+4. **Buvez tout** si vous vous trompez !
+
+## ✨ Fonctionnalités
+
+- ✅ 25 pays à travers 5 régions (Asie de l'Est, Asie du Sud-Est, Europe du Nord, Amérique Latine, Afrique)
+- ✅ Images dynamiques via Unsplash API
+- ✅ Design moderne et responsive
+- ✅ Animations fluides et effets visuels
+- ✅ Vibrations pour le feedback (sur mobile)
+- ✅ Support PWA (installable sur mobile)
+- ✅ Traductions FR/EN
+- ✅ Interface optimisée pour mobile
+
+## 🚀 Installation et développement
+
+### Prérequis
+- Node.js 18+
+- npm ou yarn
+
+### Installation
+
+```bash
+npm install
+```
+
+### Lancer en développement
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+L'application sera accessible sur [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Build pour production
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm start
+```
 
-## Learn More
+## 📱 Installation PWA
 
-To learn more about Next.js, take a look at the following resources:
+L'application peut être installée sur mobile comme une app native :
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Ouvrez l'app dans votre navigateur mobile
+2. Tapez sur "Ajouter à l'écran d'accueil"
+3. Profitez de l'expérience app-like !
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🎨 Stack technique
 
-## Deploy on Vercel
+- **Framework**: Next.js 15.1.1 (App Router)
+- **UI**: React 19 + TailwindCSS
+- **State Management**: Zustand
+- **Icons**: Lucide React
+- **i18n**: next-intl
+- **Images**: Unsplash Source API
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📂 Structure du projet
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+drinking-game/
+├── src/
+│   ├── app/                 # Next.js App Router
+│   ├── components/game/     # Composants du jeu
+│   ├── store/              # State management
+│   ├── utils/              # Utilitaires
+│   └── locales/            # Traductions
+└── public/
+    ├── manifest.json       # PWA manifest
+    └── images/countries/   # Images locales
+```
+
+## 🎯 TODO pour publication sur les stores
+
+### Assets nécessaires
+- [ ] Créer icon-192.png et icon-512.png pour PWA
+- [ ] Créer splash screens pour iOS
+- [ ] Ajouter screenshots pour les stores
+
+### Publication mobile (Capacitor)
+
+Pour publier sur Play Store et App Store, installez Capacitor :
+
+```bash
+npm install @capacitor/core @capacitor/cli @capacitor/android @capacitor/ios
+npx cap init
+npx cap add android
+npx cap add ios
+npm run build
+npx cap sync
+npx cap open android  # ou ios
+```
+
+### Améliorations futures
+- [ ] Mode "timer" (répondre en X secondes)
+- [ ] Classement local / best scores
+- [ ] Sons optionnels
+- [ ] Partage de scores sur réseaux sociaux
+- [ ] Mode multijoueur
+
+## 📝 License
+
+MIT - Libre d'utilisation et modification
+
+---
+
+**Amusez-vous bien et buvez avec modération ! 🍻**
